@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+
+static def getDate() {
+    new Date().format('MM-dd-yyyy-HHmm')
+}
+
+android {
+    compileSdkVersion 28
+    dataBinding.enabled true
+
+    android.applicationVariants.all { final variant ->
+        variant.outputs.all {
+            outputFileName = "MLand-2.0.0-${getDate()}.apk"
+        }
+    }
+    defaultConfig {
+        applicationId 'com.kyler.mland.egg'
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 200
+        versionName '2.0.0'
+        buildToolsVersion = '28.0.3'
+        resConfigs 'en'
+
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+        }
+        buildTypes {
+            debug {
+                debuggable = true
+                minifyEnabled true
+                shrinkResources true
+                zipAlignEnabled true
+            }
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleDynamicVersion,GradleDynamicVersion
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    //noinspection GradleDynamicVersion
+    implementation 'com.android.support:exifinterface:28.0.0'
+    //noinspection GradleDynamicVersion,GradleDynamicVersion
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:support-v13:28.0.0'
+    //noinspection GradleDynamicVersion
+    implementation 'com.android.support:support-v4:28.0.0'
+    //noinspection GradleDynamicVersion
+    //noinspection GradleDynamicVersion,GradleDynamicVersion
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:palette-v7:28.0.0'
+    //noinspection GradleDynamicVersion
+    implementation 'com.android.support:preference-v14:28.0.0'
+    //noinspection GradleDynamicVersion
+    implementation 'com.mikhaellopez:circularimageview:+'
+}
