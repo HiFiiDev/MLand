@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+
 import com.kyler.mland.egg.MLandBase;
 import com.kyler.mland.egg.MLandOriginal;
 import com.kyler.mland.egg.R;
 import com.kyler.mland.egg.drawerMLandOriginal;
+
 import java.util.Objects;
 
 /** Created by kyler on 10/26/15. */

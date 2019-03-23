@@ -25,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.google.samples.apps.iosched.ui.widget.ScrimInsetsScrollView;
 import com.kyler.mland.egg.activities.About;
 import com.kyler.mland.egg.activities.Home;
@@ -32,6 +33,7 @@ import com.kyler.mland.egg.activities.MLandModifiedActivity;
 import com.kyler.mland.egg.activities.MLandOriginalActivity;
 import com.kyler.mland.egg.utils.LUtils;
 import com.kyler.mland.egg.utils.UIUtils;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 

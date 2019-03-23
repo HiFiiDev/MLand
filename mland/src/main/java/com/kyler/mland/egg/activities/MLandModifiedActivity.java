@@ -23,9 +23,11 @@ package com.kyler.mland.egg.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+
 import com.kyler.mland.egg.MLandBase;
 import com.kyler.mland.egg.MLandModified;
 import com.kyler.mland.egg.R;
+
 import java.util.Objects;
 
 public class MLandModifiedActivity extends MLandBase {

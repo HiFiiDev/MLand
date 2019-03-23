@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
+
 import java.util.ArrayList;
 
 /** A custom ScrollView that can accept a scroll listener. */

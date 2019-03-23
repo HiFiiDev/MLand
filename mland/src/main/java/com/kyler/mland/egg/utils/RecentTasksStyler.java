@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
+
 import com.kyler.mland.egg.R;
 
 /** Helper class that applies the proper icon, title and background color to recent tasks list. */

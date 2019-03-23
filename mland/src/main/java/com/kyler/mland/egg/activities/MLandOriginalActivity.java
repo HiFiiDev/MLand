@@ -20,9 +20,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+
 import com.kyler.mland.egg.MLandBase;
 import com.kyler.mland.egg.MLandOriginal;
 import com.kyler.mland.egg.R;
+
 import java.util.Objects;
 
 public class MLandOriginalActivity extends MLandBase {

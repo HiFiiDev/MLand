@@ -1,7 +1,5 @@
 package com.kyler.mland.egg.activities;
 
-import static android.view.ViewTreeObserver.OnGlobalLayoutListener;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -12,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+
 import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
 import com.google.samples.apps.iosched.ui.widget.ObservableScrollView;
 import com.kyler.mland.egg.MLandBase;
 import com.kyler.mland.egg.R;
 import com.kyler.mland.egg.utils.UIUtils;
+
+import static android.view.ViewTreeObserver.OnGlobalLayoutListener;
 
 /** Created by kyler on 10/6/15. */
 @SuppressWarnings({"ALL", "DefaultFileTemplate"})
