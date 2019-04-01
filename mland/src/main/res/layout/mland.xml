@@ -24,11 +24,6 @@ limitations under the License.
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.kyler.mland.egg.MLandModified
-            android:id="@+id/world"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-
         <FrameLayout
             android:id="@+id/welcome"
             android:layout_width="match_parent"
@@ -87,13 +82,6 @@ limitations under the License.
                     app:srcCompat="@drawable/minus"
                     tools:ignore="ContentDescription" />
 
-                <LinearLayout
-                    android:id="@+id/scores"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:orientation="horizontal" />
-
                 <ImageButton
                     android:id="@+id/player_plus_button"
                     style="@style/Widget.AppCompat.Button.Borderless"
@@ -104,8 +92,20 @@ limitations under the License.
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/plus"
                     tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:id="@+id/scores"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal" />
             </LinearLayout>
         </FrameLayout>
+
+        <com.kyler.mland.egg.MLandModified
+            android:id="@+id/world"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
     </LinearLayout>
 
     <RelativeLayout

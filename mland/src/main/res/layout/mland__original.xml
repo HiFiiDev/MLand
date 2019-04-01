@@ -30,11 +30,6 @@
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
-            <com.kyler.mland.egg.MLandOriginal
-                android:id="@+id/world"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
-
             <FrameLayout
                 android:id="@+id/welcome"
                 android:layout_width="match_parent"
@@ -94,13 +89,6 @@
                     app:srcCompat="@drawable/minus"
                     tools:ignore="ContentDescription" />
 
-                <LinearLayout
-                    android:id="@+id/scores"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:orientation="horizontal" />
-
                 <ImageButton
                     android:id="@+id/player_plus_button"
                     style="@style/Widget.AppCompat.Button.Borderless"
@@ -111,7 +99,19 @@
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/plus"
                     tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:id="@+id/scores"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal" />
             </LinearLayout>
+
+            <com.kyler.mland.egg.MLandOriginal
+                android:id="@+id/world"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
         </FrameLayout>
     </LinearLayout>
 

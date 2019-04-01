@@ -26,30 +26,6 @@ limitations under the License.
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="240.0dip"
-            android:background="@color/slightly_off_white"
-            android:clipToPadding="false"
-            android:elevation="16dp"
-            android:fitsSystemWindows="false">
-
-            <FrameLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:fitsSystemWindows="false"
-                android:orientation="vertical"
-                tools:ignore="UselessParent">
-
-                <com.kyler.mland.egg.drawerMLandOriginal
-                    android:id="@+id/world"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:clipToPadding="false"
-                    android:elevation="18dp" />
-            </FrameLayout>
-        </RelativeLayout>
-
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -115,14 +91,6 @@ limitations under the License.
                     app:srcCompat="@drawable/minus"
                     tools:ignore="ContentDescription" />
 
-                <LinearLayout
-                    android:id="@+id/scores"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:orientation="horizontal"
-                    android:visibility="gone" />
-
                 <ImageButton
                     android:id="@+id/player_plus_button"
                     style="@style/Widget.AppCompat.Button.Borderless"
@@ -133,8 +101,40 @@ limitations under the License.
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/plus"
                     tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:id="@+id/scores"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:visibility="gone" />
             </LinearLayout>
         </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="240.0dip"
+            android:background="@color/slightly_off_white"
+            android:clipToPadding="false"
+            android:elevation="16dp"
+            android:fitsSystemWindows="false">
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:fitsSystemWindows="false"
+                android:orientation="vertical"
+                tools:ignore="UselessParent">
+
+                <com.kyler.mland.egg.drawerMLandOriginal
+                    android:id="@+id/world"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:clipToPadding="false"
+                    android:elevation="18dp" />
+            </FrameLayout>
+        </RelativeLayout>
     </LinearLayout>
 
     <include layout="@layout/toolbar_actionbar_transparent" />

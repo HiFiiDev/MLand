@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kyler.mland.egg">
 
-    <uses-permission android:name="android.permission.VIBRATE" />
-
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
@@ -89,5 +87,7 @@
             android:label="@string/more_info"
             android:theme="@style/Theme.MLand.MoreInfo" />
     </application>
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>
