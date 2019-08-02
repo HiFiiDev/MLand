@@ -48,22 +48,24 @@ import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 // It's like LLand, but "M"ultiplayer.
-@SuppressWarnings("ALL")
 public class MLandModified extends FrameLayout {
-  public static final int MAX_PLAYERS = 6;
-  public static final int DAY = 0, NIGHT = 1, TWILIGHT = 2, SUNSET = 3, WTF = 4;
-  static final float hsv[] = {0, 0, 0};
-  static final Rect sTmpRect = new Rect();
   private static final String TAG = "MLand";
+
   private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
   private static final boolean DEBUG_DRAW = false; // DEBUG
+
   /**
    * Originally, this was set to true, but idk. It looked pretty weird when the screen was touched
    * so I, Kyler (aka IAmReinvented) set the boolean to false.
+   *
+   * <p>
+   *
+   * <p>
+   *
+   * <p>
    *
    * <p>public static final boolean SHOW_TOUCHES = true;
    */
@@ -76,54 +78,55 @@ public class MLandModified extends FrameLayout {
   private static final boolean DEBUG_IDDQD = Log.isLoggable(TAG + ".iddqd", Log.DEBUG);
   private static final int DEFAULT_PLAYERS = 1;
   private static final int MIN_PLAYERS = 1;
+  public static final int MAX_PLAYERS = 6;
   private static final float CONTROLLER_VIBRATION_MULTIPLIER = 2f;
+  static final float hsv[] = {0, 0, 0};
+  static final Rect sTmpRect = new Rect();
   private static final int[] ANTENNAE = new int[] {R.drawable.mm_antennae, R.drawable.mm_antennae2};
   private static final int[] EYES = new int[] {R.drawable.mm_eyes, R.drawable.mm_eyes2};
   private static final int[] MOUTHS =
-      new int[] {
-        R.drawable.mm_mouth1, R.drawable.mm_mouth2, R.drawable.mm_mouth3, R.drawable.mm_mouth4
-      };
+          new int[] {
+                  R.drawable.mm_mouth1, R.drawable.mm_mouth2, R.drawable.mm_mouth3, R.drawable.mm_mouth4
+          };
   private static final int[] CACTI = {R.drawable.cactus1, R.drawable.cactus2, R.drawable.cactus3};
   private static final int[] MOUNTAINS = {
-    R.drawable.mountain1, R.drawable.mountain2, R.drawable.mountain3
+          R.drawable.mountain1, R.drawable.mountain2, R.drawable.mountain3
   };
+  private static final int DAY = 0, NIGHT = 1, TWILIGHT = 2, SUNSET = 3, WTF = 4;
   private static final int[][] SKIES = {
-    {0xFF4285F4, 0xFF6499BE}, // DAY
-    {0xFFFAFAFA, 0xFF4285F4}, // NIGHT -- MODIFIED 5/29/18
-    {0xFF000040, 0xFF000010}, // TWILIGHT
-    {0xFFa08020, 0xFF204080}, // SUNSET
-    {0xFF161718, 0xFFFFFFFF}, // WTF
+          {0xFF4285F4, 0xFF6499BE}, // DAY
+          {0xFF000010, 0xFF000000}, // NIGHT
+          {0xFF000040, 0xFF000010}, // TWILIGHT
+          {0xFFa08020, 0xFF204080}, // SUNSET
+          {0xFF161718, 0xFFFFFFFF}, // WTF
   };
   private static final int SCENE_CITY = 0, SCENE_TX = 1, SCENE_ZRH = 2;
   private static final int SCENE_COUNT = 4;
   private static Params PARAMS;
   private static float dp = 1f;
   private final AudioAttributes mAudioAttrs =
-      new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME).build();
+          new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME).build();
+  private TimeAnimator mAnim;
   private final Vibrator mVibrator;
   private final AudioManager mAudioManager;
-  private final ArrayList<Player> mPlayers = new ArrayList<>();
-  private final ArrayList<Obstacle> mObstaclesInPlay = new ArrayList<>();
-  private final Paint mTouchPaint;
-  private final Paint mPlayerTracePaint;
-  private final ArrayList<Integer> mGameControllers = new ArrayList<>();
-  public boolean mAnimating, mPlaying;
-  private TimeAnimator mAnim;
   private View mSplash;
   private ViewGroup mScoreFields;
+  private final ArrayList<Player> mPlayers = new ArrayList<>();
+  private final ArrayList<Obstacle> mObstaclesInPlay = new ArrayList<>();
   private float t, dt;
   private float mLastPipeTime; // in sec
   private int mCurrentPipeId; // basically, equivalent to the current score
   private int mWidth, mHeight;
+  private boolean mAnimating, mPlaying;
   private boolean mFrozen; // after death, a short backoff
   private int mCountdown = 0;
   private boolean mFlipped;
   private int mTaps;
   private int mTimeOfDay;
   private int mScene;
-
-  private Rect windowInsets = new Rect();
-  private Rect tempInsets = new Rect();
+  private final Paint mTouchPaint;
+  private final Paint mPlayerTracePaint;
+  private final ArrayList<Integer> mGameControllers = new ArrayList<>();
 
   public MLandModified(Context context) {
     this(context, null);
@@ -151,10 +154,13 @@ public class MLandModified extends FrameLayout {
     mPlayerTracePaint.setColor(0x80FFFFFF);
     mPlayerTracePaint.setStyle(Paint.Style.STROKE);
     mPlayerTracePaint.setStrokeWidth(2 * dp);
+
     // we assume everything will be laid out left|top
     setLayoutDirection(LAYOUT_DIRECTION_LTR);
 
     setupPlayers(DEFAULT_PLAYERS);
+
+    //    MetricsLogger.count(getContext(), "egg_mland_create", 1);
   }
 
   private static void L(String s, Object... objects) {
@@ -168,13 +174,13 @@ public class MLandModified extends FrameLayout {
 
     // Verify that the device has gamepad buttons, control sticks, or both.
     return (((sources & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
-        || ((sources & InputDevice.SOURCE_JOYSTICK) == InputDevice.SOURCE_JOYSTICK));
+            || ((sources & InputDevice.SOURCE_JOYSTICK) == InputDevice.SOURCE_JOYSTICK));
   }
 
   private static float luma(int bgcolor) {
     return 0.2126f * (float) (bgcolor & 0xFF0000) / 0xFF0000
-        + 0.7152f * (float) (bgcolor & 0xFF00) / 0xFF00
-        + 0.0722f * (float) (bgcolor & 0xFF) / 0xFF;
+            + 0.7152f * (float) (bgcolor & 0xFF00) / 0xFF00
+            + 0.0722f * (float) (bgcolor & 0xFF) / 0xFF;
   }
 
   private static float lerp(float x, float a, float b) {
@@ -206,20 +212,13 @@ public class MLandModified extends FrameLayout {
   }
 
   @Override
-  public boolean fitSystemWindows(Rect insets) {
-    windowInsets.set(insets);
-    super.fitSystemWindows(insets);
-    return false;
-  }
-
-  @Override
   public void onAttachedToWindow() {
     super.onAttachedToWindow();
     dp = getResources().getDisplayMetrics().density;
 
     reset();
     if (AUTOSTART) {
-      start(true);
+      start(false);
     }
   }
 
@@ -253,8 +252,8 @@ public class MLandModified extends FrameLayout {
     }
     for (Player p : mPlayers) {
       mScoreFields.addView(
-          p.mScoreField,
-          new MarginLayoutParams(MarginLayoutParams.WRAP_CONTENT, MarginLayoutParams.MATCH_PARENT));
+              p.mScoreField,
+              new MarginLayoutParams(MarginLayoutParams.WRAP_CONTENT, MarginLayoutParams.MATCH_PARENT));
     }
   }
 
@@ -303,11 +302,11 @@ public class MLandModified extends FrameLayout {
     realignPlayers();
     @SuppressLint("InflateParams")
     TextView scoreField =
-        (TextView) LayoutInflater.from(getContext()).inflate(R.layout.mland_scorefield, null);
+            (TextView) LayoutInflater.from(getContext()).inflate(R.layout.mland_scorefield, null);
     if (mScoreFields != null) {
       mScoreFields.addView(
-          scoreField,
-          new MarginLayoutParams(MarginLayoutParams.WRAP_CONTENT, MarginLayoutParams.MATCH_PARENT));
+              scoreField,
+              new MarginLayoutParams(MarginLayoutParams.WRAP_CONTENT, MarginLayoutParams.MATCH_PARENT));
     }
     p.setScoreField(scoreField);
     return mPlayers.size() - 1;
@@ -377,7 +376,7 @@ public class MLandModified extends FrameLayout {
   private void reset() {
     L("reset");
     final Drawable sky =
-        new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, SKIES[mTimeOfDay]);
+            new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, SKIES[mTimeOfDay]);
     sky.setDither(true);
     setBackground(sky);
 
@@ -406,7 +405,7 @@ public class MLandModified extends FrameLayout {
       sun.setTranslationX(frand(w, mWidth - w));
       if (mTimeOfDay == DAY) {
         sun.setTranslationY(
-            frand(w, (mHeight * 0.33f))); // Modified October 26th. #neverforget 0.66f
+                frand(w, (mHeight * 0.33f))); // Modified October 26th. #neverforget 0.66f
         sun.getBackground().setTint(0);
       } else {
         sun.setTranslationY(frand(mHeight * 0.66f, mHeight - w));
@@ -456,7 +455,7 @@ public class MLandModified extends FrameLayout {
         }
         s.z = (float) i / N;
         // no more shadows for these things
-        // s.setTranslationZ(PARAMS.SCENERY_Z * (1+s.z));
+        //s.setTranslationZ(PARAMS.SCENERY_Z * (1+s.z));
         s.v = 0.85f * s.z; // buildings move proportional to their distance
         if (mScene == SCENE_CITY) {
           s.setBackgroundColor(Color.GRAY);
@@ -500,30 +499,30 @@ public class MLandModified extends FrameLayout {
   public void start(boolean startPlaying) {
     L("start(startPlaying=%s)", startPlaying ? "true" : "false");
     if (startPlaying && mCountdown <= 0) {
-      showSplash(false);
+      showSplash();
 
       mSplash.findViewById(R.id.play_button).setEnabled(false);
 
       final View playImage = mSplash.findViewById(R.id.play_button_image);
-      final TextView playText = mSplash.findViewById(R.id.play_button_text);
+      final TextView playText = (TextView) mSplash.findViewById(R.id.play_button_text);
 
       playImage.animate().alpha(0f);
       playText.animate().alpha(1f);
 
       mCountdown = 5;
       post(
-          new Runnable() {
-            @Override
-            public void run() {
-              if (mCountdown == 0) {
-                startPlaying();
-              } else {
-                postDelayed(this, 500);
-              }
-              playText.setText(String.valueOf(mCountdown));
-              mCountdown--;
-            }
-          });
+              new Runnable() {
+                @Override
+                public void run() {
+                  if (mCountdown == 0) {
+                    startPlaying();
+                  } else {
+                    postDelayed(this, 500);
+                  }
+                  playText.setText(String.valueOf(mCountdown));
+                  mCountdown--;
+                }
+              });
     }
 
     for (Player p : mPlayers) {
@@ -540,15 +539,15 @@ public class MLandModified extends FrameLayout {
     if (mSplash != null && mSplash.getVisibility() == View.VISIBLE) {
       mSplash.setClickable(false);
       mSplash
-          .animate()
-          .alpha(0)
-          .translationZ(0)
-          .setDuration(300)
-          .withEndAction(() -> mSplash.setVisibility(View.GONE));
+              .animate()
+              .alpha(0)
+              .translationZ(0)
+              .setDuration(300)
+              .withEndAction(() -> mSplash.setVisibility(View.GONE));
     }
   }
 
-  public void showSplash(boolean b) {
+  public void showSplash() {
     if (mSplash != null && mSplash.getVisibility() != View.VISIBLE) {
       mSplash.setClickable(true);
       mSplash.setAlpha(0.75f);
@@ -574,6 +573,7 @@ public class MLandModified extends FrameLayout {
     mTaps = 0;
 
     final int N = mPlayers.size();
+    //    MetricsLogger.histogram(getContext(), "egg_mland_players", N);
     for (int i = 0; i < N; i++) {
       final Player p = mPlayers.get(i);
       p.setVisibility(View.VISIBLE);
@@ -665,10 +665,13 @@ public class MLandModified extends FrameLayout {
 
       if (livingPlayers == 0) {
         stop();
+
+        //    MetricsLogger.count(getContext(), "egg_mland_taps", mTaps);
         mTaps = 0;
         final int playerCount = mPlayers.size();
         for (int pi = 0; pi < playerCount; pi++) {
           final Player p = mPlayers.get(pi);
+          //    MetricsLogger.histogram(getContext(), "egg_mland_score", p.getScore());
         }
       }
     }
@@ -695,8 +698,8 @@ public class MLandModified extends FrameLayout {
       mLastPipeTime = t;
       mCurrentPipeId++;
       final int obstacley =
-          (int) (frand() * (mHeight - 2 * PARAMS.OBSTACLE_MIN - PARAMS.OBSTACLE_GAP))
-              + PARAMS.OBSTACLE_MIN;
+              (int) (frand() * (mHeight - 2 * PARAMS.OBSTACLE_MIN - PARAMS.OBSTACLE_GAP))
+                      + PARAMS.OBSTACLE_MIN;
 
       final int inset = (PARAMS.OBSTACLE_WIDTH - PARAMS.OBSTACLE_STEM_WIDTH) / 2;
       final int yinset = PARAMS.OBSTACLE_WIDTH / 2;
@@ -704,36 +707,36 @@ public class MLandModified extends FrameLayout {
       final int d1 = irand(0, 250);
       final Obstacle s1 = new Stem(getContext(), obstacley - yinset, false);
       addView(
-          s1, new LayoutParams(PARAMS.OBSTACLE_STEM_WIDTH, (int) s1.h, Gravity.TOP | Gravity.LEFT));
+              s1, new LayoutParams(PARAMS.OBSTACLE_STEM_WIDTH, (int) s1.h, Gravity.TOP | Gravity.LEFT));
       s1.setTranslationX(mWidth + inset);
       s1.setTranslationY(-s1.h - yinset);
-      s1.setTranslationZ(PARAMS.OBSTACLE_Z * 1.75f);
+      s1.setTranslationZ(PARAMS.OBSTACLE_Z * 0.75f);
       s1.animate().translationY(0).setStartDelay(d1).setDuration(250);
       mObstaclesInPlay.add(s1);
 
       final Obstacle p1 = new Pop(getContext(), PARAMS.OBSTACLE_WIDTH);
       addView(
-          p1,
-          new LayoutParams(
-              PARAMS.OBSTACLE_WIDTH, PARAMS.OBSTACLE_WIDTH, Gravity.TOP | Gravity.LEFT));
+              p1,
+              new LayoutParams(
+                      PARAMS.OBSTACLE_WIDTH, PARAMS.OBSTACLE_WIDTH, Gravity.TOP | Gravity.LEFT));
       p1.setTranslationX(mWidth);
       p1.setTranslationY(-PARAMS.OBSTACLE_WIDTH);
       p1.setTranslationZ(PARAMS.OBSTACLE_Z);
-      p1.setScaleX(0.45f);
-      p1.setScaleY(-0.45f);
+      p1.setScaleX(0.25f);
+      p1.setScaleY(-0.25f);
       p1.animate()
-          .translationY(s1.h - inset)
-          .scaleX(1f)
-          .scaleY(-1f)
-          .setStartDelay(d1)
-          .setDuration(250);
+              .translationY(s1.h - inset)
+              .scaleX(1f)
+              .scaleY(-1f)
+              .setStartDelay(d1)
+              .setDuration(250);
       mObstaclesInPlay.add(p1);
 
       final int d2 = irand(0, 250);
       final Obstacle s2 =
-          new Stem(getContext(), mHeight - obstacley - PARAMS.OBSTACLE_GAP - yinset, true);
+              new Stem(getContext(), mHeight - obstacley - PARAMS.OBSTACLE_GAP - yinset, true);
       addView(
-          s2, new LayoutParams(PARAMS.OBSTACLE_STEM_WIDTH, (int) s2.h, Gravity.TOP | Gravity.LEFT));
+              s2, new LayoutParams(PARAMS.OBSTACLE_STEM_WIDTH, (int) s2.h, Gravity.TOP | Gravity.LEFT));
       s2.setTranslationX(mWidth + inset);
       s2.setTranslationY(mHeight + yinset);
       s2.setTranslationZ(PARAMS.OBSTACLE_Z * 0.75f);
@@ -742,20 +745,20 @@ public class MLandModified extends FrameLayout {
 
       final Obstacle p2 = new Pop(getContext(), PARAMS.OBSTACLE_WIDTH);
       addView(
-          p2,
-          new LayoutParams(
-              PARAMS.OBSTACLE_WIDTH, PARAMS.OBSTACLE_WIDTH, Gravity.TOP | Gravity.LEFT));
+              p2,
+              new LayoutParams(
+                      PARAMS.OBSTACLE_WIDTH, PARAMS.OBSTACLE_WIDTH, Gravity.TOP | Gravity.LEFT));
       p2.setTranslationX(mWidth);
       p2.setTranslationY(mHeight);
       p2.setTranslationZ(PARAMS.OBSTACLE_Z);
       p2.setScaleX(0.25f);
       p2.setScaleY(0.25f);
       p2.animate()
-          .translationY(mHeight - s2.h - yinset)
-          .scaleX(1f)
-          .scaleY(1f)
-          .setStartDelay(d2)
-          .setDuration(400);
+              .translationY(mHeight - s2.h - yinset)
+              .scaleX(1f)
+              .scaleY(1f)
+              .setStartDelay(d2)
+              .setDuration(400);
       mObstaclesInPlay.add(p2);
     }
 
@@ -948,6 +951,7 @@ public class MLandModified extends FrameLayout {
     final int OBSTACLE_WIDTH;
     final int OBSTACLE_STEM_WIDTH;
     final int OBSTACLE_GAP;
+    int OBSTACLE_MIN;
     final int BUILDING_WIDTH_MIN;
     final int BUILDING_WIDTH_MAX;
     final int BUILDING_HEIGHT_MIN;
@@ -962,10 +966,9 @@ public class MLandModified extends FrameLayout {
     final float PLAYER_Z;
     final float PLAYER_Z_BOOST;
     final float HUD_Z;
-    int OBSTACLE_MIN;
 
     Params(Resources res) {
-      TRANSLATION_PER_SEC = res.getDimension(R.dimen.translation_per_sec_modified);
+      TRANSLATION_PER_SEC = res.getDimension(R.dimen.translation_per_sec);
       OBSTACLE_SPACING = res.getDimensionPixelSize(R.dimen.obstacle_spacing);
       OBSTACLE_PERIOD = (int) (OBSTACLE_SPACING / TRANSLATION_PER_SEC);
       BOOST_DV = res.getDimensionPixelSize(R.dimen.boost_dv);
@@ -1002,25 +1005,25 @@ public class MLandModified extends FrameLayout {
 
   private static class Player extends ImageView implements GameView {
     static int sNextColor = 0;
-    final int color;
     private final int[] sColors =
-        new int[] {
-          // 0xFF78C557,
-          0xFFF1F1F1, 0xFF3B78E7, 0xFFF4B400, 0xFF0F9D58, 0xFF7B1880, 0xFF9E9E9E,
-        };
+            new int[] {
+                    //0xFF78C557,
+                    0xFFF1F1F1, 0xFF3B78E7, 0xFFF4B400, 0xFF0F9D58, 0xFF7B1880, 0xFF9E9E9E,
+            };
     private final float[] sHull =
-        new float[] {
-          0.3f, 0f, // left antenna
-          0.7f, 0f, // right antenna
-          0.92f, 0.33f, // off the right shoulder of Orion
-          0.92f, 0.75f, // right hand (our right, not his right)
-          0.6f, 1f, // right foot
-          0.4f, 1f, // left foot BLUE!
-          0.08f, 0.75f, // sinistram
-          0.08f, 0.33f, // cold shoulder
-        };
+            new float[] {
+                    0.3f, 0f, // left antenna
+                    0.7f, 0f, // right antenna
+                    0.92f, 0.33f, // off the right shoulder of Orion
+                    0.92f, 0.75f, // right hand (our right, not his right)
+                    0.6f, 1f, // right foot
+                    0.4f, 1f, // left foot BLUE!
+                    0.08f, 0.75f, // sinistram
+                    0.08f, 0.33f, // cold shoulder
+            };
     final float[] corners = new float[sHull.length];
     float dv;
+    final int color;
     private MLandModified mLandModified;
     private boolean mBoosting;
     private float mTouchX = -1, mTouchY = -1;
@@ -1036,16 +1039,16 @@ public class MLandModified extends FrameLayout {
       color = sColors[(sNextColor++ % sColors.length)];
       getBackground().setTint(color);
       setOutlineProvider(
-          new ViewOutlineProvider() {
-            @Override
-            public void getOutline(View view, Outline outline) {
-              final int w = view.getWidth();
-              final int h = view.getHeight();
-              final int ix = (int) (w * 0.3f);
-              final int iy = (int) (h * 0.2f);
-              outline.setRect(ix, iy, w - ix, h - iy);
-            }
-          });
+              new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                  final int w = view.getWidth();
+                  final int h = view.getHeight();
+                  final int ix = (int) (w * 0.3f);
+                  final int iy = (int) (h * 0.2f);
+                  outline.setRect(ix, iy, w - ix, h - iy);
+                }
+              });
     }
 
     static Player create(MLandModified land) {
@@ -1076,18 +1079,18 @@ public class MLandModified extends FrameLayout {
       mScoreField = tv;
       if (tv != null) {
         setScore(mScore); // reapply
-        // mScoreField.setBackgroundResource(R.drawable.scorecard);
+        //mScoreField.setBackgroundResource(R.drawable.scorecard);
         mScoreField.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         mScoreField.setTextColor(luma(color) > 0.7f ? 0xFF000000 : 0xFFFFFFFF);
       }
     }
 
     void reset() {
-      // setX(mLand.mWidth / 2);
+      //setX(mLand.mWidth / 2);
       setY(
-          mLandModified.mHeight / 2
-              + (int) (Math.random() * PARAMS.PLAYER_SIZE)
-              - PARAMS.PLAYER_SIZE / 2);
+              mLandModified.mHeight / 2
+                      + (int) (Math.random() * PARAMS.PLAYER_SIZE)
+                      - PARAMS.PLAYER_SIZE / 2);
       setScore(0);
       setScoreField(mScoreField); // refresh color
       mBoosting = false;
@@ -1164,6 +1167,11 @@ public class MLandModified extends FrameLayout {
     void die() {
       // boolean mAlive = false;
       mAlive = false;
+      if (mScoreField != null) {
+        //mScoreField.setTextColor(0xFFFFFFFF);
+        //mScoreField.getBackground().setColorFilter(0xFF666666, PorterDuff.Mode.SRC_ATOP);
+        //mScoreField.setBackgroundResource(R.drawable.scorecard_gameover);
+      }
     }
 
     void start() {
@@ -1208,10 +1216,10 @@ public class MLandModified extends FrameLayout {
   }
 
   private class Pop extends Obstacle {
-    // The marshmallow illustration and hitbox is 2/3 the size of its container.
-    final Drawable antenna;
     int mRotate;
     int cx, cy, r;
+    // The marshmallow illustration and hitbox is 2/3 the size of its container.
+    final Drawable antenna;
     Drawable eyes;
     Drawable mouth;
 
@@ -1226,13 +1234,13 @@ public class MLandModified extends FrameLayout {
         }
       }
       setOutlineProvider(
-          new ViewOutlineProvider() {
-            @Override
-            public void getOutline(View view, Outline outline) {
-              final int pad = (int) (getWidth() * 1f / 6);
-              outline.setOval(pad, pad, getWidth() - pad, getHeight() - pad);
-            }
-          });
+              new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                  final int pad = (int) (getWidth() * 1f / 6);
+                  outline.setOval(pad, pad, getWidth() - pad, getHeight() - pad);
+                }
+              });
     }
 
     public boolean intersects(Player p) {
@@ -1280,9 +1288,9 @@ public class MLandModified extends FrameLayout {
     final Path mShadow = new Path();
     final GradientDrawable mGradient = new GradientDrawable();
     final boolean mDrawShadow;
-    final int id; // use this to track which pipes have been cleared
     Path mJandystripe;
     Paint mPaint2;
+    final int id; // use this to track which pipes have been cleared
 
     Stem(Context context, float h, boolean drawShadow) {
       super(context, h);
@@ -1301,7 +1309,7 @@ public class MLandModified extends FrameLayout {
         mPaint2.setColor(0xFFFF0000);
         mPaint2.setColorFilter(new PorterDuffColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY));
       } else {
-        // mPaint.setColor(0xFFA1887F);
+        //mPaint.setColor(0xFFA1887F);
         mGradient.setColors(new int[] {0xFFBCAAA4, 0xFFA1887F});
       }
     }
@@ -1311,12 +1319,12 @@ public class MLandModified extends FrameLayout {
       super.onAttachedToWindow();
       setWillNotDraw(false);
       setOutlineProvider(
-          new ViewOutlineProvider() {
-            @Override
-            public void getOutline(View view, Outline outline) {
-              outline.setRect(0, 0, getWidth(), getHeight());
-            }
-          });
+              new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                  outline.setRect(0, 0, getWidth(), getHeight());
+                }
+              });
     }
 
     @Override

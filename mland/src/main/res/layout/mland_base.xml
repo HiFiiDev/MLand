@@ -31,11 +31,23 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="200.0dip"
+                android:background="@color/off_white"
+                android:fitsSystemWindows="false">
+
+                <com.kyler.mland.egg.ui.MLandTextView
+                    android:id="@+id/mlandtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/app_name"
+                    android:textColor="@color/quartz_black_50p"
+                    android:textSize="56.0sp"
+                    customfontdemo:fontName="UberMoveText-Medium.ttf" />
+
+            </RelativeLayout>
 
             <!-- Drawer items -->
             <LinearLayout
@@ -45,8 +57,6 @@
                 android:background="@android:color/white"
                 android:fitsSystemWindows="true"
                 android:orientation="vertical" />
-
-        </FrameLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -58,23 +68,7 @@
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="200.0dip"
-            android:background="@color/off_white"
-            android:fitsSystemWindows="false">
 
-            <com.kyler.mland.egg.ui.MLandTextView
-                android:id="@+id/mlandtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/app_name"
-                android:textColor="@color/quartz_black_50p"
-                android:textSize="56.0sp"
-                customfontdemo:fontName="UberMoveText-Medium.ttf" />
-
-        </RelativeLayout>
     </LinearLayout>
 
 </com.google.samples.apps.iosched.ui.widget.ScrimInsetsScrollView>

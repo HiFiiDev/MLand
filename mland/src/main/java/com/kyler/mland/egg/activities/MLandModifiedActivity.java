@@ -23,12 +23,9 @@ package com.kyler.mland.egg.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-
 import com.kyler.mland.egg.MLandBase;
 import com.kyler.mland.egg.MLandModified;
 import com.kyler.mland.egg.R;
-
-import java.util.Objects;
 
 public class MLandModifiedActivity extends MLandBase {
   private MLandModified mLandModified;
@@ -42,12 +39,12 @@ public class MLandModifiedActivity extends MLandBase {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     super.getWindow()
-        .getDecorView()
-        .setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            .getDecorView()
+            .setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
     setContentView(R.layout.mland);
-    Objects.requireNonNull(getSupportActionBar()).setTitle(null);
+    getSupportActionBar().setTitle(null);
     mLandModified = findViewById(R.id.world);
     mLandModified.setScoreFieldHolder(findViewById(R.id.scores));
     final View welcome = findViewById(R.id.welcome);
@@ -93,7 +90,7 @@ public class MLandModifiedActivity extends MLandBase {
 
     mLandModified.onAttachedToWindow(); // resets and starts animation
     updateSplashPlayers();
-    mLandModified.showSplash(false);
+    mLandModified.showSplash();
   }
 
   public void playerMinus(View v) {
