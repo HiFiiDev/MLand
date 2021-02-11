@@ -11,28 +11,28 @@
      limitations under the License.
 -->
 <resources>
-    <dimen name="obstacle_spacing">380dp</dimen>
+    <dimen name="obstacle_spacing">9000000dp</dimen>
     <dimen name="translation_per_sec">100dp</dimen>
     <dimen name="boost_dv">550dp</dimen>
     <dimen name="player_hit_size">48dp</dimen>
     <dimen name="player_size">36dp</dimen>
-    <dimen name="obstacle_width">130dp</dimen>
-    <dimen name="obstacle_stem_width">8dp</dimen>
-    <dimen name="obstacle_gap">140dp</dimen>
-    <dimen name="obstacle_height_min">48dp</dimen>
+    <dimen name="obstacle_width">0dp</dimen>
+    <dimen name="obstacle_stem_width">0dp</dimen>
+    <dimen name="obstacle_gap">2dp</dimen>
+    <dimen name="obstacle_height_min">2dp</dimen>
     <dimen name="building_width_min">50dp</dimen>
-    <dimen name="building_width_max">250dp</dimen>
-    <dimen name="building_height_min">20dp</dimen>
-    <dimen name="cloud_size_min">10dp</dimen>
-    <dimen name="cloud_size_max">100dp</dimen>
+    <dimen name="building_width_max">450dp</dimen>
+    <dimen name="building_height_min">200dp</dimen>
+    <dimen name="cloud_size_min">16dp</dimen>
+    <dimen name="cloud_size_max">180dp</dimen>
     <dimen name="sun_size">56.0dip</dimen>
     <dimen name="star_size_min">3dp</dimen>
     <dimen name="star_size_max">5dp</dimen>
     <dimen name="G">30dp</dimen>
     <dimen name="max_v">1000dp</dimen>
-    <dimen name="scenery_z">12.0dip</dimen>
+    <dimen name="scenery_z">18.0dip</dimen>
     <dimen name="obstacle_z">24.0dip</dimen>
     <dimen name="player_z">8.0dip</dimen>
     <dimen name="player_z_boost">16.0dip</dimen>
-    <dimen name="hud_z">4.0dip</dimen>
+    <dimen name="hud_z">90.0dip</dimen>
 </resources>

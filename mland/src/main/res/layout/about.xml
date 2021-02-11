@@ -41,18 +41,6 @@
                     android:fitsSystemWindows="false"
                     android:orientation="vertical">
 
-                    <FrameLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="vertical">
-
-                        <com.kyler.mland.egg.MLandOriginal
-                            android:id="@+id/world"
-                            android:layout_width="500dp"
-                            android:layout_height="500dp"></com.kyler.mland.egg.MLandOriginal>
-
-                    </FrameLayout>
-
                 </LinearLayout>
 
                 <!-- Background photo. -->
@@ -65,10 +53,8 @@
                     <ImageView
                         android:id="@+id/session_photo"
                         android:layout_width="match_parent"
-                        android:layout_height="260.0dip"
-                        android:adjustViewBounds="true"
-                        android:background="@color/slightly_off_white"
-                        android:cropToPadding="true"
+                        android:layout_height="20.0dip"
+                        android:adjustViewBounds="true" android:cropToPadding="true"
                         android:scaleType="centerCrop"
                         fresco:ignore="ContentDescription" />
 
@@ -164,6 +150,20 @@
                         </LinearLayout>
                     </FrameLayout>
 
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:orientation="vertical">
+
+                        <com.kyler.mland.egg.MLandOriginal
+                            android:id="@+id/world"
+                            android:gravity="top"
+                            android:layout_width="600dp"
+                            android:layout_height="600dp"></com.kyler.mland.egg.MLandOriginal>
+
+                    </FrameLayout>
+
                 </FrameLayout>
 
                 !-- FAB -->
@@ -171,6 +171,7 @@
                 <include layout="@layout/include_add_schedule_fab" />
 
             </FrameLayout>
+
         </com.google.samples.apps.iosched.ui.widget.ObservableScrollView>
 
     </LinearLayout>

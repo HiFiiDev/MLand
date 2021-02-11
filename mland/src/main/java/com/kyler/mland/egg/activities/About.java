@@ -65,11 +65,7 @@ public class About extends MLandBase implements ObservableScrollView.Callbacks {
     mLand.setScoreFieldHolder(findViewById(R.id.scores));
     final View welcome = findViewById(R.id.welcome);
     mLand.setSplash(welcome);
-    final int numControllers = mLand.getGameControllers().size();
-    if (numControllers > 0) {
-      mLand.setupPlayers(numControllers);
-    }
-
+    mLand.showSplash();
     mHasPhoto = true;
 
     mlandView = (ImageView) findViewById(R.id.session_photo);
@@ -112,10 +108,10 @@ public class About extends MLandBase implements ObservableScrollView.Callbacks {
     if (vto.isAlive()) {
       vto.addOnGlobalLayoutListener(mGlobalLayoutListener);
     }
-    mLand.addPlayer();
     final int numControllers = mLand.getGameControllers().size();
-    mLand.onAttachedToWindow(); // resets and starts animation
-    mLand.showSplash();
+    mLand.setPressed(true);
+    mLand.addPlayer();
+
     mScrollViewChild = findViewById(R.id.scroll_view_child);
     mScrollViewChild.setVisibility(View.VISIBLE);
     mDetailsContainer = findViewById(R.id.details_container);
@@ -123,7 +119,6 @@ public class About extends MLandBase implements ObservableScrollView.Callbacks {
     mActionBarToolbar.setVisibility(View.VISIBLE);
     mPhotoViewContainer = findViewById(R.id.session_photo_container);
     mAddScheduleButtonContainer = findViewById(R.id.add_schedule_button_container);
-    mLand.start(true);
     displayData();
   }
 
@@ -190,7 +185,7 @@ public class About extends MLandBase implements ObservableScrollView.Callbacks {
     ViewCompat.setZ(mHeaderBox, gapFillProgress / mMaxHeaderElevation + 8);
 
     // Move background photo (parallax effect)
-    mPhotoViewContainer.setTranslationY(scrollY * 0.5f);
+    mPhotoViewContainer.setTranslationY(scrollY * 0.3f);
   }
 
   public void displayData() {
