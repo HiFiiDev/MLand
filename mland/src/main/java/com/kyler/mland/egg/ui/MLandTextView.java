@@ -4,10 +4,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.widget.TextView;
 
 import com.kyler.mland.egg.R;
 
-public class MLandTextView extends android.support.v7.widget.AppCompatTextView {
+public class MLandTextView extends TextView {
 
   public MLandTextView(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);

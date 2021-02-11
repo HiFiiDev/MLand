@@ -72,6 +72,8 @@
 
     <color name="transparent">#00000000</color>
     <color name="status_bar_overlay">#1A000000</color>
+    <color name="tealish_green__primary">#FF00ADB5</color>
+    <color name="tealish_green__primaryDark">#FF008A90</color>
 
     <color name="real_black_20">#33000000</color>
 

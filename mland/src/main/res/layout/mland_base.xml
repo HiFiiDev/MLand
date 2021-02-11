@@ -13,8 +13,8 @@
 
 <com.google.samples.apps.iosched.ui.widget.ScrimInsetsScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:customfontdemo="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:customfontdemo="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navdrawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,31 +23,44 @@
     android:choiceMode="singleChoice"
     android:elevation="16dp"
     android:fitsSystemWindows="true"
-    app:appInsetForeground="@color/black__10_percent"
-    tools:ignore="Overdraw">
+    app:appInsetForeground="@color/black__10_percent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="200.0dip"
-                android:background="@color/off_white"
-                android:fitsSystemWindows="false">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="200.0dip"
+            android:fitsSystemWindows="false">
 
-                <com.kyler.mland.egg.ui.MLandTextView
-                    android:id="@+id/mlandtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/app_name"
-                    android:textColor="@color/quartz_black_50p"
-                    android:textSize="56.0sp"
-                    customfontdemo:fontName="UberMoveText-Medium.ttf" />
+            <com.kyler.mland.egg.ui.MLandTextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/app_name"
+                android:textColor="@color/quantum_googblue500"
+                android:textSize="48.0sp"
+                customfontdemo:fontName="LyftPro-Bold.ttf" />
+        </RelativeLayout>
 
-            </RelativeLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom|center"
+            android:layout_marginRight="24.0dip"
+            android:orientation="vertical"
+            tools:ignore="RtlHardcoded">
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
 
             <!-- Drawer items -->
             <LinearLayout
@@ -58,17 +71,7 @@
                 android:fitsSystemWindows="true"
                 android:orientation="vertical" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|bottom|center"
-            android:layout_marginRight="24.0dip"
-            android:orientation="vertical"
-            tools:ignore="RtlHardcoded,UselessLeaf">
-
-        </LinearLayout>
-
-
+        </FrameLayout>
     </LinearLayout>
 
 </com.google.samples.apps.iosched.ui.widget.ScrimInsetsScrollView>

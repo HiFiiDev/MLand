@@ -8,4 +8,9 @@
             android:gravity="center"
             android:src="@drawable/ic_mland_splash_logo" />
     </item>
+    <item android:bottom="@dimen/launch_screen_text_bottom">
+        <bitmap
+            android:gravity="bottom|center_horizontal"
+            android:src="@drawable/mland_splash_text" />
+    </item>
 </layer-list>

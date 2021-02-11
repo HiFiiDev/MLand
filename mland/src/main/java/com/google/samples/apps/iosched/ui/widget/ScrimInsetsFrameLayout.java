@@ -33,9 +33,10 @@ import com.kyler.mland.egg.R;
  * area above UI chrome (status and navigation bars, overlay action bars).
  */
 public class ScrimInsetsFrameLayout extends FrameLayout {
-  private final Rect mTempRect = new Rect();
   private Drawable mInsetForeground;
+
   private Rect mInsets;
+  private final Rect mTempRect = new Rect();
   private OnInsetsCallback mOnInsetsCallback;
 
   public ScrimInsetsFrameLayout(Context context) {

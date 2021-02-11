@@ -1,17 +1,23 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <dimen name="nav_drawer_max_width">320.0dip</dimen>
 
     <!-- 'Borrowed' From the Hangouts 5.0 values/dimens.xml :p -->
 
     <dimen name="launch_screen_logo_bottom">16.0dip</dimen>
-    <dimen name="launch_screen_text_bottom" tools:keep="@dimen/launch_screen_text_bottom">48.0dip
-    </dimen>
+    <dimen name="launch_screen_text_bottom">48.0dip</dimen>
+    <dimen name="keyline_1">16dp</dimen>
+    <dimen name="add_to_schedule_button_height">56dp</dimen>
+    <!-- including padding -->
+    <dimen name="add_to_schedule_button_height_no_padding">40dp</dimen>
+    <dimen name="session_details_extra_space_bottom">48dp</dimen>
+    <dimen name="keyline_1_minus_8dp">8dp</dimen>
+    <dimen name="session_details_floating_width">500dp</dimen>
+    <dimen name="session_details_floating_height">650dp</dimen>
 
     <dimen name="fab_touch_raise">6dp</dimen>
     <dimen name="fab_elevation">8dp</dimen>
-    <dimen name="headerbar_elevation">16dp</dimen>
-    <dimen name="session_detail_max_header_elevation">24dp</dimen>
+    <dimen name="headerbar_elevation">48dp</dimen>
+    <dimen name="session_detail_max_header_elevation">90dp</dimen>
     <dimen name="translation_per_sec_modified">375dp</dimen>
-
 
 </resources>

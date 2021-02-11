@@ -1,7 +1,3 @@
-## MLAND: ##
-## TO DO: ##
-## CLEAN UP ##
-
 # Copyright 2014 Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,9 +26,7 @@
 # If you want to enable optimization, you should include the
 # following:
 -optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
-
-# Ignored via D8
-# -optimizationpasses 5
+-optimizationpasses 5
 -allowaccessmodification
 #
 # Note that you cannot just include these flags in your own
@@ -95,7 +89,7 @@
 -keep class com.google.samples.apps.iosched.rpc.userdata.model.**
 -keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
 # See https://groups.google.com/forum/#!topic/guava-discuss/YCZzeCiIVoI
--dontwarn com.google.common.collect.MinMaxPriorityQueue
+# -dontwarn com.google.common.collect.MinMaxPriorityQueue
 # Assume dependency libraries Just Work(TM)
 -dontwarn com.google.android.youtube.**
 -dontwarn com.google.android.analytics.**
@@ -138,7 +132,7 @@
 -dontwarn com.larvalabs.svgandroid.**
 
 # Firebase
-# See: http://stackoverflow.com/questions/26273929/what-proguard-configuration-do-i-need-for-firebase-on-android
+# See: http://stackoverflow.com/questions/26273929/what-proguard-configuration-do-i-need-# for-firebase-on-android
 -keepnames class com.google.samples.apps.iosched.sync.userdata.** { *; }
 -keep class com.firebase.** { *; }
 -keep class org.apache.** { *; }

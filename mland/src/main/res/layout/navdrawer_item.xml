@@ -20,7 +20,7 @@
     android:id="@+id/ll"
     android:layout_width="match_parent"
     android:layout_height="48.0dip"
-    android:background="?attr/selectableItemBackground"
+    android:background="?android:selectableItemBackground"
     android:gravity="start|center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/keyline_1"
@@ -40,6 +40,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/navdrawer_item_text_color"
         android:textSize="14.0sp"
-        customfontdemo:fontName="GoogleSans_Display.ttf" />
+        customfontdemo:fontName="Roboto-Medium.ttf" />
 
 </LinearLayout>

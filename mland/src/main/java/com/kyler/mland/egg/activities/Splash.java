@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import com.kyler.mland.egg.R;
 
 /** Created by kyler on 1/4/16. */
+@SuppressWarnings("DefaultFileTemplate")
 @SuppressLint("Registered")
 public class Splash extends AppCompatActivity {
 

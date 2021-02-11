@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
 import com.google.samples.apps.iosched.ui.widget.ObservableScrollView;
 import com.kyler.mland.egg.MLandBase;
+import com.kyler.mland.egg.MLandOriginal;
 import com.kyler.mland.egg.R;
 import com.kyler.mland.egg.utils.UIUtils;
 
@@ -24,6 +25,7 @@ import static android.view.ViewTreeObserver.OnGlobalLayoutListener;
 public class About extends MLandBase implements ObservableScrollView.Callbacks {
   private static final float PHOTO_ASPECT_RATIO = 1.7777777f;
   private static final float DRAWEE_PHOTO_ASPECT_RATIO = 1.33f;
+  private MLandOriginal mLand;
   private ImageView mlandView;
   private int mPhotoHeightPixels;
   private View mAddScheduleButtonContainer;
@@ -55,23 +57,23 @@ public class About extends MLandBase implements ObservableScrollView.Callbacks {
   public void onCreate(Bundle savedInstanceState) {
     setTheme(R.style.Theme_MLand_Home);
     super.onCreate(savedInstanceState);
-    super.getWindow()
-        .getDecorView()
-        .setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     boolean shouldBeFloatingWindow = false;
-    if (shouldBeFloatingWindow) {
-      setupFloatingWindow(
-          R.dimen.session_details_floating_width, R.dimen.session_details_floating_height, 1, 0.5f);
-    }
     setContentView(R.layout.about);
     getSupportActionBar().setTitle(null);
     activateLightNavigationBar();
+    mLand = findViewById(R.id.world);
+    mLand.setScoreFieldHolder(findViewById(R.id.scores));
+    final View welcome = findViewById(R.id.welcome);
+    mLand.setSplash(welcome);
+    final int numControllers = mLand.getGameControllers().size();
+    if (numControllers > 0) {
+      mLand.setupPlayers(numControllers);
+    }
 
     mHasPhoto = true;
 
     mlandView = (ImageView) findViewById(R.id.session_photo);
-
+    //mlandView = (MLandOriginal) findViewById(R.id.testing);
     mHandler = new Handler();
     initViews();
   }
@@ -103,13 +105,17 @@ public class About extends MLandBase implements ObservableScrollView.Callbacks {
   private void initViews() {
     mFABElevation = getResources().getDimensionPixelSize(R.dimen.fab_elevation);
     mMaxHeaderElevation =
-        getResources().getDimensionPixelSize(R.dimen.session_detail_max_header_elevation);
+            getResources().getDimensionPixelSize(R.dimen.session_detail_max_header_elevation);
     mScrollView = (ObservableScrollView) findViewById(R.id.scroll_view);
     mScrollView.addCallbacks(this);
     ViewTreeObserver vto = mScrollView.getViewTreeObserver();
     if (vto.isAlive()) {
       vto.addOnGlobalLayoutListener(mGlobalLayoutListener);
     }
+    mLand.addPlayer();
+    final int numControllers = mLand.getGameControllers().size();
+    mLand.onAttachedToWindow(); // resets and starts animation
+    mLand.showSplash();
     mScrollViewChild = findViewById(R.id.scroll_view_child);
     mScrollViewChild.setVisibility(View.VISIBLE);
     mDetailsContainer = findViewById(R.id.details_container);
@@ -117,6 +123,7 @@ public class About extends MLandBase implements ObservableScrollView.Callbacks {
     mActionBarToolbar.setVisibility(View.VISIBLE);
     mPhotoViewContainer = findViewById(R.id.session_photo_container);
     mAddScheduleButtonContainer = findViewById(R.id.add_schedule_button_container);
+    mLand.start(true);
     displayData();
   }
 
@@ -137,11 +144,10 @@ public class About extends MLandBase implements ObservableScrollView.Callbacks {
     }
 
     ViewGroup.MarginLayoutParams mlp =
-        (ViewGroup.MarginLayoutParams) mDetailsContainer.getLayoutParams();
+            (ViewGroup.MarginLayoutParams) mDetailsContainer.getLayoutParams();
     if (mlp.topMargin != mHeaderHeightPixels + mPhotoHeightPixels) {
       mlp.topMargin = mHeaderHeightPixels + mPhotoHeightPixels;
       mDetailsContainer.setLayoutParams(mlp);
-      mDetailsContainer.setPadding(16, 150, 16, 150);
     }
 
     onScrollChanged(0, 0); // trigger scroll handling
@@ -158,22 +164,30 @@ public class About extends MLandBase implements ObservableScrollView.Callbacks {
 
     mHeaderBox.setTranslationY(newTop);
     mAddScheduleButtonContainer.setTranslationY(
-        newTop + mHeaderHeightPixels - mAddScheduleButtonContainerHeightPixels / 2);
+            newTop + mHeaderHeightPixels - mAddScheduleButtonContainerHeightPixels / 2);
 
     float gapFillProgress = 1;
     if (mPhotoHeightPixels != 0) {
       gapFillProgress =
-          Math.min(Math.max(UIUtils.getProgress(scrollY, 0, mPhotoHeightPixels), 0), 1);
+              Math.min(Math.max(UIUtils.getProgress(scrollY, 0, mPhotoHeightPixels), 0), 1);
 
       if (gapFillProgress == 1) {
-        //    Toast.makeText(this, "Okay we're locked", Toast.LENGTH_LONG).show();
       } else if (gapFillProgress >= 1) {
 
       }
     }
 
-    ViewCompat.setElevation(mHeaderBox, gapFillProgress * mMaxHeaderElevation);
+
+    int baseColor = getResources().getColor(R.color.tealish_green__primary);
+    float alpha = Math.min(1, (float) scrollY / mHeaderBox.getHeight());
+    //Window window = getWindow();
+    //window.setStatusBarColor(UIUtils.getColorWithAlpha(alpha, (darkenColor(baseColor))));
+    //mHeaderBox.setBackgroundColor(UIUtils.getColorWithAlpha(alpha, (darkenColor(baseColor))));
+
+    // testing
     ViewCompat.setTranslationZ(mHeaderBox, gapFillProgress * mMaxHeaderElevation);
+    ViewCompat.setElevation(mHeaderBox, gapFillProgress * mMaxHeaderElevation);
+    ViewCompat.setZ(mHeaderBox, gapFillProgress / mMaxHeaderElevation + 8);
 
     // Move background photo (parallax effect)
     mPhotoViewContainer.setTranslationY(scrollY * 0.5f);

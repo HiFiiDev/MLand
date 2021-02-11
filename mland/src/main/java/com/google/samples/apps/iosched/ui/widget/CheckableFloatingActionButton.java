@@ -47,7 +47,6 @@ public class CheckableFloatingActionButton extends FloatingActionButton implemen
     setChecked(checked, true);
   }
 
-  @SuppressWarnings("SameParameterValue")
   private void setChecked(boolean checked, boolean allowAnimate) {
     mChecked = checked;
     refreshDrawableState();

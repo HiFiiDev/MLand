@@ -17,12 +17,12 @@
 package com.kyler.mland.egg.utils;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 
 import com.kyler.mland.egg.R;
 
@@ -33,10 +33,12 @@ class RecentTasksStyler {
   private RecentTasksStyler() {}
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  public static void styleRecentTasksEntry(AppCompatActivity activity) {
+  public static void styleRecentTasksEntry(Activity activity) {
 
     Resources resources = activity.getResources();
     String label = resources.getString(activity.getApplicationInfo().labelRes);
+    //noinspection deprecation
+    @SuppressWarnings("deprecation")
     final int colorPrimaryDark = resources.getColor(R.color.colorPrimary);
 
     if (sIcon == null) {

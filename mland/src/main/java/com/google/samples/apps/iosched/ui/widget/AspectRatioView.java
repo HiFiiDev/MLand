@@ -31,8 +31,8 @@ public class AspectRatioView extends FrameLayout {
 
   private static final int NO_MAX_HEIGHT = -1;
 
-  private final float mAspectRatio;
-  private int mMaxHeight;
+  private float mAspectRatio = 0f;
+  private int mMaxHeight = NO_MAX_HEIGHT;
 
   public AspectRatioView(Context context) {
     this(context, null, 0);

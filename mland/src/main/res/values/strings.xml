@@ -6,8 +6,7 @@
     <string name="about">About</string>
 
     <string name="more_info">More info</string>
-
+    
     <!-- Name of the easter egg. DO NOT TRANSLATE -->
     <string name="mland">Marshmallow Land</string>
-
 </resources>

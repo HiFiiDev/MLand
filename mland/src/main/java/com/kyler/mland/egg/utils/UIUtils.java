@@ -32,12 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
 /** An assortment of UI helpers. */
-@SuppressWarnings("ALL")
 public class UIUtils {
-  public static final String GOOGLE_PLUS_PACKAGE_NAME = "com.google.android.apps.plus";
-  public static final String YOUTUBE_PACKAGE_NAME = "com.google.android.youtube";
-  public static final int ANIMATION_FADE_IN_TIME = 250;
-  public static final String TRACK_ICONS_TAG = "tracks";
   /**
    * Factor applied to session color to derive the background color on panels and when a session
    * photo could not be downloaded (or while it is being downloaded)
@@ -48,6 +43,10 @@ public class UIUtils {
       "com.google.samples.apps.iosched.meta.TARGET_FORM_FACTOR";
   private static final String TARGET_FORM_FACTOR_HANDSET = "handset";
   private static final String TARGET_FORM_FACTOR_TABLET = "tablet";
+  public static final String GOOGLE_PLUS_PACKAGE_NAME = "com.google.android.apps.plus";
+  public static final String YOUTUBE_PACKAGE_NAME = "com.google.android.youtube";
+  public static final int ANIMATION_FADE_IN_TIME = 250;
+  public static final String TRACK_ICONS_TAG = "tracks";
   private static final float SESSION_PHOTO_SCRIM_ALPHA = 0.25f; // 0=invisible, 1=visible image
   private static final float SESSION_PHOTO_SCRIM_SATURATION = 0.2f; // 0=gray, 1=color image
   /** Flags used with {@link android.text.format.DateUtils#formatDateRange}. */
@@ -55,6 +54,20 @@ public class UIUtils {
       DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY;
   /**
    * Regex to search for HTML escape sequences.
+   *
+   * <p>
+   *
+   * <p>
+   *
+   * <p>
+   *
+   * <p>
+   *
+   * <p>
+   *
+   * <p>
+   *
+   * <p>
    *
    * <p>Searches for any continuous string of characters starting with an ampersand and ending with
    * a semicolon. (Example: &amp;amp;)
@@ -73,9 +86,15 @@ public class UIUtils {
   long currentTimeMillis = UIUtils.getCurrentTime(null);
 
   /**
-   * Enables and disables {@linkplain AppCompatActivity activities} based on their {@link
+   * Enables and disables {@linkplain android.app.Activity activities} based on their {@link
    * #TARGET_FORM_FACTOR_ACTIVITY_METADATA}" meta-data and the current device. Values should be
    * either "handset", "tablet", or not present (meaning universal).
+   *
+   * <p>
+   *
+   * <p>
+   *
+   * <p>
    *
    * <p><a href="http://stackoverflow.com/questions/13202805">Original code</a> by Dandre Allison.
    *
@@ -184,6 +203,12 @@ public class UIUtils {
 
   /**
    * Create a color integer value with specified alpha.
+   *
+   * <p>
+   *
+   * <p>
+   *
+   * <p>
    *
    * <p>This may be useful to change alpha value of background color.
    *

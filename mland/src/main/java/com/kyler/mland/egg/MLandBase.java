@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,7 +37,6 @@ import com.kyler.mland.egg.utils.UIUtils;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-@SuppressWarnings("ALL")
 public abstract class MLandBase extends AppCompatActivity {
 
   /*
@@ -58,12 +57,11 @@ public abstract class MLandBase extends AppCompatActivity {
   fade in and fade out durations for the main content when switching between
   different Activities of the app through the Nav Drawer
   */
-  private static final int MAIN_CONTENT_FADEOUT_DURATION = 400;
-  private static final int MAIN_CONTENT_FADEIN_DURATION = 400;
-  private static final int NAVDRAWER_CLOSE_PRELAUNCH = 300;
-  // delay to launch nav drawer item, to allow close animation to play
-  private static final int NAVDRAWER_LAUNCH_DELAY = 250;
-  private static final int POST_LAUNCH_FADE = 300;
+  private static final long MAIN_CONTENT_FADEOUT_DURATION = 150L;
+  private static final long MAIN_CONTENT_FADEIN_DURATION = 250L;
+  private static final long NAVDRAWER_CLOSE_PRELAUNCH = 300L;
+  private static final long NAVDRAWER_LAUNCH_DELAY = 250L;
+  private static final long POST_LAUNCH_FADE = 300L;
 
   // titles for navdrawer items (indices must correspond to the above)
   private static final int[] NAVDRAWER_TITLE_RES_ID =
@@ -76,16 +74,16 @@ public abstract class MLandBase extends AppCompatActivity {
         R.drawable.ic_landscape__mland_modified,
         0
       };
-  // list of navdrawer items that were actually added to the navdrawer, in order
-  private final ArrayList<Integer> mNavDrawerItems = new ArrayList<>();
+  private DrawerLayout mDrawerLayout;
   // Primary toolbar and drawer toggle
   protected Toolbar mActionBarToolbar;
   SharedPreferences pref;
-  private DrawerLayout mDrawerLayout;
   // A Runnable that we should execute when the navigation drawer finishes its closing animation
   private Runnable mDeferredOnDrawerClosedRunnable;
   private CharSequence mTitle;
   private Context context;
+  // list of navdrawer items that were actually added to the navdrawer, in order
+  private final ArrayList<Integer> mNavDrawerItems = new ArrayList<>();
   // views that correspond to each navdrawer item, null if not yet created
   private View[] mNavDrawerItemViews = null;
   // Helper methods for L APIs
@@ -197,7 +195,7 @@ public abstract class MLandBase extends AppCompatActivity {
     }
 
     if (mActionBarToolbar != null) {
-      mActionBarToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_toolbar_nav));
+      mActionBarToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_drawer));
       mActionBarToolbar.setNavigationOnClickListener(
           view -> mDrawerLayout.openDrawer(GravityCompat.START));
     }
@@ -242,10 +240,8 @@ public abstract class MLandBase extends AppCompatActivity {
   }
 
   // Subclasses can override this for custom behavior
-  @SuppressWarnings("EmptyMethod")
   private void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {}
 
-  @SuppressWarnings("EmptyMethod")
   private void onNavDrawerSlide(float offset) {}
 
   private boolean isNavDrawerOpen() {
@@ -335,25 +331,21 @@ public abstract class MLandBase extends AppCompatActivity {
         intent = new Intent(this, Home.class);
         startActivity(intent);
         overridePendingTransition(0, 0);
-        finish();
         break;
       case NAVDRAWER_ITEM_MLAND:
         intent = new Intent(this, MLandOriginalActivity.class);
         startActivity(intent);
         overridePendingTransition(0, 0);
-        finish();
         break;
       case NAVDRAWER_ITEM_MLANDMODIFIED:
         intent = new Intent(this, MLandModifiedActivity.class);
         startActivity(intent);
         overridePendingTransition(0, 0);
-        finish();
         break;
       case NAVDRAWER_ITEM_ABOUT:
         intent = new Intent(this, About.class);
         startActivity(intent);
         overridePendingTransition(0, 0);
-        finish();
         break;
     }
   }
@@ -420,13 +412,14 @@ public abstract class MLandBase extends AppCompatActivity {
     super.onStop();
   }
 
-  private void getActionBarToolbar() {
+  private Toolbar getActionBarToolbar() {
     if (mActionBarToolbar == null) {
       mActionBarToolbar = findViewById(R.id.toolbar);
       if (mActionBarToolbar != null) {
         setSupportActionBar(mActionBarToolbar);
       }
     }
+    return mActionBarToolbar;
   }
 
   @SuppressWarnings("UnusedAssignment")
@@ -457,8 +450,7 @@ public abstract class MLandBase extends AppCompatActivity {
         itemId >= 0 && itemId < NAVDRAWER_TITLE_RES_ID.length ? NAVDRAWER_TITLE_RES_ID[itemId] : 0;
 
     // set icon and text
-    iconView.setVisibility(View.GONE);
-    //noinspection ConstantConditions
+    iconView.setVisibility(iconId > 0 ? View.VISIBLE : View.GONE);
     if (iconId > 0) {
       iconView.setImageResource(iconId);
     }
@@ -500,9 +492,18 @@ public abstract class MLandBase extends AppCompatActivity {
             ? getResources().getColor(R.color.navdrawer_item_text_color)
             : getResources().getColor(R.color.navdrawer_item_text_color));
     //    iconView.setColorFilter(selected ?
-    // getResources().getColor(R.color.navdrawer_item_icon_color) :
-    // getResources().getColor(R.color.navdrawer_item_icon_color)); *
+    //getResources().getColor(R.color.navdrawer_item_icon_color) :
+    //getResources().getColor(R.color.navdrawer_item_icon_color)); *
   }
+
+  public int darkenColor(int color) {
+    float[] hsv = new float[3];
+    Color.colorToHSV(color, hsv);
+    hsv[2] *= 0.8f;
+    return Color.HSVToColor(hsv);
+    // Credits for this: https://github.com/Musenkishi/wally
+  }
+
 
   public LUtils getLUtils() {
     return mLUtils;
@@ -513,29 +514,4 @@ public abstract class MLandBase extends AppCompatActivity {
   }
 
   protected abstract Context getContext();
-
-  /**
-   * Configure this Activity as a floating window, with the given {@code width}, {@code height} and
-   * {@code alpha}, and dimming the background with the given {@code dim} value.
-   */
-  protected void setupFloatingWindow(int width, int height, int alpha, float dim) {
-    WindowManager.LayoutParams params = getWindow().getAttributes();
-    params.width = getResources().getDimensionPixelSize(width);
-    params.height = getResources().getDimensionPixelSize(height);
-    params.alpha = alpha;
-    params.dimAmount = dim;
-    params.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-    getWindow().setAttributes(params);
-  }
-
-  /** Returns true if the theme sets the {@code R.attr.isFloatingWindow} flag to true. */
-  protected boolean shouldBeFloatingWindow() {
-    Resources.Theme theme = getTheme();
-    TypedValue floatingWindowFlag = new TypedValue();
-
-    // Check isFloatingWindow flag is defined in theme.
-    return !(theme == null
-            || !theme.resolveAttribute(R.attr.isFloatingWindow, floatingWindowFlag, true))
-        && (floatingWindowFlag.data != 0);
-  }
 }
