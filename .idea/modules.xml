@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/MLand-master.iml" filepath="$PROJECT_DIR$/MLand-master.iml" group="MLand-master" />
-      <module fileurl="file://$PROJECT_DIR$/mland/mland.iml" filepath="$PROJECT_DIR$/mland/mland.iml" group="MLand-master/mland" />
-    </modules>
-  </component>
-</project>
